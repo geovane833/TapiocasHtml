@@ -11,13 +11,14 @@ async function loadFoods() {
     try {
         console.log('Iniciando a requisição para /foods...');
 
-        const response = await fetch('http://localhost:8080/foods'); // Altere a URL conforme o endpoint do backend
+        const response = await fetch('http://localhost:8080/foods'); // Alterar para o URL correto
+
+        // Verificar se a resposta está OK
         if (!response.ok) {
-            throw new Error('Erro ao carregar alimentos');
+            throw new Error(`Erro ao carregar alimentos: ${response.statusText}`);
         }
 
         const foods = await response.json();
-
         console.log('Dados recebidos:', foods);
 
         baseOptions.innerHTML = '';  // Limpa as opções anteriores
@@ -39,6 +40,7 @@ async function loadFoods() {
         alert('Erro ao carregar alimentos. Verifique a conexão ou tente novamente mais tarde.');
     }
 }
+
 
 // Função para selecionar a base (Tapioca, Cuscuz, Sanduíche)
 function selectBase(idFood, name, price, isChecked) {
@@ -292,15 +294,16 @@ function viewHistory() {
 
                 // Converte a string de data para o formato Date e exibe corretamente
                 if (sale.datesale) {
-                    const saleDate = new Date(sale.datesale);  // Converte para um objeto Date
+                    const saleDate = new Date(...sale.datesale);  // Usa o spread operator para passar o array como parâmetros
                     if (!isNaN(saleDate)) {
-                        formattedDate = saleDate.toLocaleString('pt-BR'); // Formata para pt-BR
+                        formattedDate = saleDate.toLocaleString('pt-BR');  // Formata a data no padrão pt-BR
                     } else {
                         formattedDate = 'Data inválida';
                     }
                 } else {
                     formattedDate = 'Data não fornecida';
                 }
+                
 
                 saleDiv.innerHTML = `
                     <p><strong>ID:</strong> ${sale.id}</p>  <!-- Exibe o ID da venda -->
